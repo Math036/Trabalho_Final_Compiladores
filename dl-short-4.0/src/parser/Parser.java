@@ -16,6 +16,8 @@ import inter.stmt.If;
 import inter.stmt.Program;
 import inter.stmt.Stmt;
 import inter.stmt.Write;
+import inter.expr.Unary;
+import inter.expr.And;
 import lexer.Lexer;
 import lexer.Tag;
 import lexer.Token;
@@ -149,19 +151,39 @@ public class Parser {
 	}
 
 	private Expr expr() {
-		Expr e = rel();
+		Expr e = and_e();
 		while( look.tag() == Tag.OR ) {
 			move();  
-			e = new Or(e, rel());
+			e = new Or(e, and_e());
 		}
 		return e;
 	}
 
+	private Expr and_e(){
+		Expr e = equa_e();
+		while(look.tag() == Tag.AND){
+			move();
+			e = new And(e,equa_e());
+		}
+		return e;
+	}
+
+	private Expr equa_e(){
+		Expr e = rel();
+		while(look.tag() == Tag.EQUAL ||
+			  look.tag() == Tag.NE){
+				Token op = move();
+				e = new Rel(op, e, rel());
+		}
+		return e;
+	}
+	
 	private Expr rel() {
 		Expr e = arith();
 		while ( look.tag() == Tag.LT || 
 				look.tag() == Tag.LE ||
-				look.tag() == Tag.GT) {
+				look.tag() == Tag.GT ||
+				look.tag() == Tag.GE) {
 			Token op = move();
 			e = new Rel(op, e, arith());
 		}
@@ -179,10 +201,21 @@ public class Parser {
 	}
 
 	private Expr term() {
-		Expr e = factor();
+		Expr e = unary();
 		while(	look.tag() == Tag.MUL ) {
 			Token op = move();
-			e = new Bin(op, e, factor());
+			e = new Bin(op, e, unary());
+		}
+		return e;
+	}
+
+	private Expr unary(){
+		Expr e = null;
+		if(look.tag() == Tag.NOT){
+			move();
+			e = new Unary(unary());
+		}else{
+			e = factor();
 		}
 		return e;
 	}

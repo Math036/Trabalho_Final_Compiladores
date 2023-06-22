@@ -12,10 +12,13 @@ DECL     			::= TYPE ID
 ASSIGN   			::= ID = EXPR  
 WRITE				::= escreva(ID)  
 IF					::= se (EXPR) STMT  
-EXPR				::= EXPR "|" REL | REL  
-REL					::= REL < ARITH | REL <= ARITH | REL > ARITH | ARITH  
+EXPR				::= EXPR "|" AND_EXPR | AND_EXPR   
+AND_EXPR            ::= AND_EXPR & EQUA_EXPR | EQUA_EXPR
+EQUA_EXPR           ::= EQUA_EXPR == REL | EQUA_EXPR != REL | REL
+REL					::= REL < ARITH | REL <= ARITH | REL > ARITH | REL >= ARITH | ARITH  
 ARITH  				::= ARITH + TERM | ARITH - TERM | TERM  
-TERM				::= TERM * FACTOR | FACTOR  
+TERM				::= TERM * UNA_E | UNA_E
+UNA_E               ::= ! UNA_E | FACTOR  
 FACTOR				::= (EXPR) | ID | LIT_INT | LIT_REAL | LIT_BOOL  
 
 ## Definições Regulares

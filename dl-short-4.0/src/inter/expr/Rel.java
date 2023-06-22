@@ -9,8 +9,10 @@ public class Rel extends Expr {
 
 	public Rel(Token op, Expr e1, Expr e2 ) {
 		super(op, Tag.BOOL);
+		System.out.println("tipo e1 "+e1.type());
+		System.out.println("tipo e2 "+e2.type());
 		switch (op.tag() ) {
-		case LT: case LE: case GT:
+		case LT: case LE: case GT: case GE: case EQUAL: case NE:
 			if (!e1.type().isNum() ||
 				!e2.type().isNum())
 				error("O operador relacional " 
