@@ -40,7 +40,7 @@ public class Rel extends Expr {
 	}
 
 	@Override
-	public void jumping(int t, int f) {
+	public void jumping(int t, int f, String type) {
 		Expr cond = this.gen();
 		code.emitBreak(cond, t, f);
 	}

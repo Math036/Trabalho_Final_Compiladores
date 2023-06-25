@@ -15,7 +15,7 @@ public class Literal extends Expr {
 	}
 	
 	@Override
-	public void jumping(int t, int f) {
+	public void jumping(int t, int f, String type) {
 		code.emitBreak(this, t, f);
 	}
 	

@@ -28,7 +28,7 @@ public class Or extends Expr {
 		int out = code.newLabel();
 		Temp d1 = new Temp(Tag.BOOL);
 		code.emitAlloca(d1);
-		this.jumping(t, f);
+		this.jumping(t, f, "Bin");
 		code.emitLabel(t);
 		code.emitStore(d1, Emitter.LIT_TRUE );
 		code.emitBreak(out);
@@ -42,10 +42,10 @@ public class Or extends Expr {
 	}
 	
 	@Override
-	public void jumping(int t, int f) {
+	public void jumping(int t, int f, String type) {
 		int label = code.newLabel();
-		expr1.jumping(t, label);
+		expr1.jumping(t, label, type);
 		code.emitLabel(label);
-		expr2.jumping(t, f);
+		expr2.jumping(t, f, type);
 	}	
 }

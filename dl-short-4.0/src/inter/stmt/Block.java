@@ -13,8 +13,10 @@ public class Block extends Stmt {
 
 	@Override
 	public void gen() {
-		for( Node s: children ) 
+		for( Node s: children ){
 			((Stmt)s).gen();
+		}
+			
 	}
 
 	@Override

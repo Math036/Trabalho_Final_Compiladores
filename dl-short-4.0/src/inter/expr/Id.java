@@ -17,8 +17,12 @@ public class Id extends Expr {
 	}
 	
 	@Override
-	public void jumping(int t, int f) {
-		Expr e = this.gen();
+	public void jumping(int t, int f, String type) {
+		Expr e = this.gen();	
+		if(type == "Unary"){
+			Temp d = new Temp(type());
+			code.emitOperation(d, e, null, Tag.NE);
+		}
 		code.emitBreak(e, t, f);
 	}
 	

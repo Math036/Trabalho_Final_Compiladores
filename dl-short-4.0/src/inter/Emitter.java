@@ -68,10 +68,17 @@ public final class Emitter {
 	 */
 	//%6 = add i32 %4, %5
 	public void emitOperation(Expr dest, Expr op1, Expr op2, Tag op) {
-		emit( dest + " = " 
+		if(op2 != null){
+			emit( dest + " = " 
 				+ codeOperation(op, op1.type()) 
 				+ " " + codeType(op1.type()) 
-				+ " " + op1 + ", " + op2 ); 
+				+ " " + op1 + ", " + op2); 
+		}else{
+			emit( dest + " = " 
+				+ codeOperation(op, op1.type()) 
+				+ " " + codeType(op1.type()) 
+				+ " " + op1 + ", " + 0); 
+		}
 	}
 
 	//%26 = sitofp i32 1 to double
@@ -124,6 +131,9 @@ public final class Emitter {
 			case LT:  return "fcmp olt";
 			case LE:  return "fcmp ole";
 			case GT:  return "fcmp ogt";
+			case GE:  return "fcmp oge";
+			case EQUAL: return "fcmp oeq";
+			case NE: return "fcmp one";
 			default:  return null;
 			}
 		} else {
@@ -134,6 +144,10 @@ public final class Emitter {
 			case LT:  return "icmp slt";
 			case LE:  return "icmp sle";
 			case GT:  return "icmp sgt";
+			case GE:  return "icmp sge";
+			case EQUAL: return "icmp eq";
+			case NE: return "icmp ne";
+			case NOT: return "xor";
 			default: return null;
 			}	
 		}

@@ -1,5 +1,6 @@
 package inter.expr;
 
+import inter.Emitter;
 import lexer.Tag;
 import lexer.Token;
 
@@ -22,6 +23,30 @@ public class And extends Expr{
 
     @Override
 	public Expr gen() {
-		return null;
+		int t = code.newLabel();
+		int f = code.newLabel();
+		int out = code.newLabel();
+		Temp d1 = new Temp(Tag.BOOL);
+		code.emitAlloca(d1);
+		this.jumping(t, f, "Bin");
+		code.emitLabel(t);
+		
+		code.emitStore(d1, Emitter.LIT_TRUE );
+		code.emitBreak(out);
+		code.emitLabel(f);
+		code.emitStore(d1, Emitter.LIT_FALSE);
+		code.emitBreak(out);
+		code.emitLabel(out);
+		Temp d2 = new Temp(Tag.BOOL);
+		code.emitLoad(d2, d1);
+		return d2;
 	}
+
+	@Override
+	public void jumping(int t, int f, String type) {
+		int label = code.newLabel();
+		expr1.jumping(label,f,type);
+		code.emitLabel(label);
+		expr2.jumping(t, f, type);
+	}	
 }

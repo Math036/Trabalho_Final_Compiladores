@@ -21,7 +21,7 @@ public abstract class Expr extends Node {
 		return type;
 	}
 	
-	public void jumping(int t, int f) {
+	public void jumping(int t, int f, String type) {
 	}
 
 	public abstract Expr gen();	
